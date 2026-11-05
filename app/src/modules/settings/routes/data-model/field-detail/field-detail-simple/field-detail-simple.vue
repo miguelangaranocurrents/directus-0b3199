@@ -84,7 +84,12 @@ const groups = computed(() => {
 		if (!search.value) return filteredInterfaces;
 		const searchValue = search.value!.toLowerCase();
 		return filteredInterfaces.filter(
-			(inter) => inter.id.toLowerCase().includes(searchValue) || inter.name.toLowerCase().includes(searchValue),
+			(inter) =>
+				// Always keep the chosen interface visible, so its configuration stays open even when
+				// the interface was switched automatically (e.g. M2M -> Files) to one not matching the search
+				inter.id === chosenInterface.value ||
+				inter.id.toLowerCase().includes(searchValue) ||
+				inter.name.toLowerCase().includes(searchValue),
 		);
 	}
 });
